@@ -5,11 +5,11 @@ num_correct = 0
 num_attempted = 0
 start_time = time.time()
 while (time.time() - start_time) < rnd_length:
-    op = random.choice(['+', '-', '*', '**'])
+    op = random.choices(['+', '-', '*', '**'], weights=[0.3, 0.3, 0.3, 0.1])[0]
     if op == "**":
         x = random.randint(2, 100)
         if x > 20:
-            x -= x % 5
+            x -= x % 5# round large nums to mult of 5
         y = 2
     else:
         if op == "*":
@@ -20,13 +20,18 @@ while (time.time() - start_time) < rnd_length:
         y = random.randint(0, x)
     # no divisions for now
     # op = random.choice(['+', '-', '*'])
-    pred = int(input(f"{x} {op} {y}: "))
     actual = eval(f'x {op} y')
-    if pred == actual:
-        num_correct += 1
-        print('correct')
-    else:
+    try:
+        pred = int(input(f"{x} {op} {y}: "))
+        
+        if pred == actual:
+            num_correct += 1
+            print('correct')
+        else:
+            print(f"answer: {actual}")
+    except:
         print(f"answer: {actual}")
+
     num_attempted += 1
 
 print(f"Got {num_correct} correct out of {num_attempted} questions.\n{num_correct/num_attempted} success rate.")
